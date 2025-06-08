@@ -144,6 +144,8 @@
     <div class="actions">
       <button onclick="rewriteMessage()">Rewrite Message</button>
       <button onclick="handleEnquiry()">Generate Reply</button>
+      <button onclick="editor()">Editor-in-chief</button>
+      <button onclick="chatbot()">ChatBot</button>
     </div>
     <div class="output" id="outputBox">Awaiting response...</div>
   </div>
@@ -200,6 +202,47 @@
         console.error(err);
       }
     }
+  
+    async function editor() {
+      const input = document.getElementById("messageInput").value;
+      const output = document.getElementById("outputBox");
+      output.textContent = "Processing...";
+
+      try {
+        const res = await fetch('https://blog-restful-api-os43.onrender.com/ai/editor-in-chief', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: input })
+        });
+
+        const data = await res.json();
+        output.textContent = data.result || "No content received.";
+      } catch (err) {
+        output.textContent = "Error contacting API.";
+        console.error(err);
+      }
+    }
+  
+    async function chatbot() {
+      const input = document.getElementById("messageInput").value;
+      const output = document.getElementById("outputBox");
+      output.textContent = "Processing...";
+
+      try {
+        const res = await fetch('https://blog-restful-api-os43.onrender.com/ai/chatbot/command', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: input })
+        });
+
+        const data = await res.json();
+        output.textContent = data.result || "No text received.";
+      } catch (err) {
+        output.textContent = "Error contacting API.";
+        console.error(err);
+      }
+    }
+  
   </script>
 
 </body>
